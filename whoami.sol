@@ -48,7 +48,7 @@ contract WhoAmI {
 
         // If-Else Statement
         keccak256(abi.encodePacked(_firstName)) != keccak256(abi.encodePacked("")) ? temp.firstName = _firstName : temp.firstName = database[msg.sender].firstName;
-        keccak256(abi.encodePacked(_lastName)) != keccak256(abi.encodePacked("")) ? temp.lastName = _lastName : temp.lastName = database[msg.sender].   ;
+        keccak256(abi.encodePacked(_lastName)) != keccak256(abi.encodePacked("")) ? temp.lastName = _lastName : temp.lastName = database[msg.sender].lastName;
         _age != database[msg.sender].age ? temp.age = _age : temp.age = database[msg.sender].age;
 
         database[msg.sender] = temp;
