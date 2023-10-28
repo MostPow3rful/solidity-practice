@@ -3,7 +3,6 @@
 - Every address can update the information of self account
 - Every address can delete self account
 - Every address can access the information of self account
-- Prevent logic Bugs
-
-## whoami.sol
 - Show The address of User
+- Show The Amount of User's Wallet
+- Prevent logic Bugs

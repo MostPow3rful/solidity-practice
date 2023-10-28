@@ -107,4 +107,14 @@ contract Management {
 
         return database[msg.sender].age;
     }
+
+    // This Function Return The address Of User/Contract
+    function showAddress() public view returns(address) {
+        return msg.sender;
+    }
+
+    // This Function Show the Amount of User/Contract
+    function showAmount() public view returns(uint256) {
+        return msg.sender.balance;
+    }
 }
