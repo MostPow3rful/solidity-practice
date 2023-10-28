@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-contract WhoAmI {
+contract Management {
     // [ Structure ]
     // This Structure Have 3 Fields : [firstName string], [lastName string], [age uint8] Also every address have one account
     struct Account {
@@ -20,11 +20,6 @@ contract WhoAmI {
     mapping(address => bool) private haveAccount;
 
     // [ Functions ]
-    // This Function Show The Address of Wallet/Smart Contract
-    function myAddress() public view returns (address) {
-        return msg.sender;
-    }
-
     // This Function Create New Account
     function createAccount(
         string memory _firstname,

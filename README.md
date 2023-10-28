@@ -1,4 +1,4 @@
-## whoami.sol
+## management.sol
 - ### Create an app To do This :
 - Every address can create an account [ limit : one account per address ]
 - Every address can update the information of self account
