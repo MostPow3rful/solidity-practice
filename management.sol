@@ -1,7 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
-contract Management {
+// [ Imported Contracts ]
+import "error.sol";
+
+contract Management is Error {
     // [ Structure ]
     // This Structure Have 3 Fields : [firstName string], [lastName string], [age uint8] Also every address have one account
     struct Account {
@@ -12,17 +15,22 @@ contract Management {
 
     // [ Modifiers ]
     modifier accountIsExists() {
-        require(
-            haveAccount[msg.sender] == true,
-            "[ You CanNot Do this Action beacuse You DoNot Have an Account. Please Create Account ]"
-        );
+        if (haveAccount[msg.sender] == false) {
+            revert accountStatus(
+                false,
+                "[ You CanNot Do this Action beacuse You DoNot Have an Account. Please Create Account ]"
+            );
+        }
         _;
     }
+
     modifier accountIsNotExists() {
-        require(
-            haveAccount[msg.sender] == false,
-            "[ You CanNot Do this Action beacuse Have an Account. Please Create Account ]"
-        );
+        if (haveAccount[msg.sender] == true) {
+            revert accountStatus(
+                true,
+                "[ You CanNot Do this Action beacuse You Have an Account. Please Reset Your Account ]"
+            );
+        }
         _;
     }
 
@@ -76,19 +84,28 @@ contract Management {
 
     // This Function Reset Account Information
     function resetPerson() public accountIsExists {
-
         database[msg.sender] = Account("", "", 0);
         haveAccount[msg.sender] = false;
         emit AccountReseted(msg.sender);
     }
 
     // This Function Return The FirstName Field of Account
-    function showFirstName() public view accountIsExists returns (string memory firstName) {
+    function showFirstName()
+        public
+        view
+        accountIsExists
+        returns (string memory firstName)
+    {
         return database[msg.sender].firstName;
     }
 
     // This Function Return The LastName Field Of Account
-    function showLastName() public view accountIsExists returns (string memory lastName) {
+    function showLastName()
+        public
+        view
+        accountIsExists
+        returns (string memory lastName)
+    {
         return database[msg.sender].lastName;
     }
 
@@ -98,12 +115,12 @@ contract Management {
     }
 
     // This Function Return The address Of User/Contract
-    function showAddress() public view returns(address) {
+    function showAddress() public view returns (address) {
         return msg.sender;
     }
 
     // This Function Show the Amount of User/Contract
-    function showAmount() public view returns(uint256) {
+    function showAmount() public view returns (uint256) {
         return msg.sender.balance;
     }
 }
