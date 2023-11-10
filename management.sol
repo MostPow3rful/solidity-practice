@@ -10,6 +10,22 @@ contract Management {
         uint8 age;
     }
 
+    // [ Modifiers ]
+    modifier accountIsExists() {
+        require(
+            haveAccount[msg.sender] == true,
+            "[ You CanNot Do this Action beacuse You DoNot Have an Account. Please Create Account ]"
+        );
+        _;
+    }
+    modifier accountIsNotExists() {
+        require(
+            haveAccount[msg.sender] == false,
+            "[ You CanNot Do this Action beacuse Have an Account. Please Create Account ]"
+        );
+        _;
+    }
+
     // [ Events ]
     event AccountCreated(string firstName, string lastName, uint8 age);
     event AccountUpdated(string firstName, string lastName, uint8 age);
@@ -25,9 +41,7 @@ contract Management {
         string memory _firstname,
         string memory _lastName,
         uint8 _age
-    ) public {
-        require(haveAccount[msg.sender] == false, "[ You Have an Account ]");
-
+    ) public accountIsNotExists {
         database[msg.sender] = Account(_firstname, _lastName, _age);
         haveAccount[msg.sender] = true;
         emit AccountCreated(_firstname, _lastName, _age);
@@ -38,13 +52,7 @@ contract Management {
         string memory _firstName,
         string memory _lastName,
         uint8 _age
-    ) public {
-        // Check : is Account Exists or Not
-        require(
-            haveAccount[msg.sender] == true,
-            "[ You Can Not Update Your Account due You DoNot Have an Account. Please Create Account ]"
-        );
-
+    ) public accountIsExists {
         Account memory temp = Account("", "", 0);
 
         // If-Else Statements
@@ -67,11 +75,7 @@ contract Management {
     }
 
     // This Function Reset Account Information
-    function resetPerson() public {
-        require(
-            haveAccount[msg.sender] == true,
-            "[ You Can Not Reset Your Account due You DoNot Have an Account. Please Create Account ]"
-        );
+    function resetPerson() public accountIsExists {
 
         database[msg.sender] = Account("", "", 0);
         haveAccount[msg.sender] = false;
@@ -79,32 +83,17 @@ contract Management {
     }
 
     // This Function Return The FirstName Field of Account
-    function showFirstName() public view returns (string memory firstName) {
-        require(
-            haveAccount[msg.sender] == true,
-            "[ You Can Not See Your information due You DoNot Have an Account. Please Create Account ]"
-        );
-
+    function showFirstName() public view accountIsExists returns (string memory firstName) {
         return database[msg.sender].firstName;
     }
 
     // This Function Return The LastName Field Of Account
-    function showLastName() public view returns (string memory lastName) {
-        require(
-            haveAccount[msg.sender] == true,
-            "[ You Can Not See Your information due You DoNot Have an Account. Please Create Account ]"
-        );
-
+    function showLastName() public view accountIsExists returns (string memory lastName) {
         return database[msg.sender].lastName;
     }
 
     // This Function Return The Age Field Of Account
-    function showAge() public view returns (uint8 age) {
-        require(
-            haveAccount[msg.sender] == true,
-            "[ You Can Not See Your information due You DoNot Have an Account. Please Create Account ]"
-        );
-
+    function showAge() public view accountIsExists returns (uint8 age) {
         return database[msg.sender].age;
     }
 
