@@ -15,20 +15,20 @@ contract Management is Error {
 
     // [ Modifiers ]
     modifier accountIsExists() {
-        if (haveAccount[msg.sender] == false) {
+        if (haveAccount[msg.sender] == true) {
             revert accountStatus(
-                false,
-                "[ You CanNot Do this Action beacuse You DoNot Have an Account. Please Create Account ]"
+                true,
+                "[ You CanNot Do this Action beacuse You Have an Account. Please Reset Your Account ]"
             );
         }
         _;
     }
 
     modifier accountIsNotExists() {
-        if (haveAccount[msg.sender] == true) {
+        if (haveAccount[msg.sender] == false) {
             revert accountStatus(
-                true,
-                "[ You CanNot Do this Action beacuse You Have an Account. Please Reset Your Account ]"
+                false,
+                "[ You CanNot Do this Action beacuse You DoNot Have an Account. Please Create Account ]"
             );
         }
         _;
