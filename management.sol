@@ -36,6 +36,30 @@ contract Management is Error {
         _;
     }
 
+    // This Modifier Check The User's Account if the account didn't creat successful
+    modifier isAccountCreated() {
+        _;
+        if (haveAccount[msg.sender] == false) {
+            emit ErrorTryingToCreateAccount(msg.sender);
+            revert accountStatus(
+                false,
+                "[ There is an Error. Your Account Didn't Creat. Please Try Again ]"
+            );
+        }
+    }
+
+    // This Modifier Check The User's Account if the account didn't reset successful
+    modifier isAccountReseted() {
+        _;
+        if (haveAccount[msg.sender] == true) {
+            emit ErrorTryingToResetAccount(msg.sender);
+            revert accountStatus(
+                true,
+                "[ There is an Error. Your Account Didn't Reset. Please Try Again ]"
+            );
+        }
+    }
+
     // [ Events ]
     event AccountCreated(string firstName, string lastName, uint8 age);
     event AccountUpdated(string firstName, string lastName, uint8 age);
@@ -51,7 +75,7 @@ contract Management is Error {
         string memory _firstname,
         string memory _lastName,
         uint8 _age
-    ) public onlyGuest {
+    ) public onlyGuest isAccountCreated {
         database[msg.sender] = Account(_firstname, _lastName, _age);
         haveAccount[msg.sender] = true;
         emit AccountCreated(_firstname, _lastName, _age);
@@ -85,7 +109,7 @@ contract Management is Error {
     }
 
     // This Function Reset Account Information
-    function resetPerson() public onlyUser {
+    function resetAccount() public onlyUser isAccountReseted {
         database[msg.sender] = Account("", "", 0);
         haveAccount[msg.sender] = false;
         emit AccountReseted(msg.sender);
