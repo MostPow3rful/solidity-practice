@@ -14,7 +14,7 @@ contract Management is Error {
     }
 
     // [ Modifiers ]
-    // This Modifier Check The User's Account ( User Must Not Have Account )
+    // This Modifier Check The Account of User ( User Must Not Have Account )
     modifier onlyGuest() {
         if (haveAccount[msg.sender] == true) {
             revert accountStatus(
@@ -25,7 +25,7 @@ contract Management is Error {
         _;
     }
 
-    // This Modifier Check The User's Account ( User Must Have Account )
+    // This Modifier Check The Account of User ( User Must Have Account )
     modifier onlyUser() {
         if (haveAccount[msg.sender] == false) {
             revert accountStatus(
@@ -36,26 +36,26 @@ contract Management is Error {
         _;
     }
 
-    // This Modifier Check The User's Account if the account didn't create successful
+    // This Modifier Check The Account of User if the account DidNot create successful
     modifier isAccountCreated() {
         _;
         if (haveAccount[msg.sender] == false) {
             emit ErrorTryingToCreateAccount(msg.sender);
             revert accountStatus(
                 false,
-                "[ There is an Error. Your Account Didn't Creat. Please Try Again ]"
+                "[ There is an Error. Your Account DidNot Creat. Please Try Again ]"
             );
         }
     }
 
-    // This Modifier Check The User's Account if the account didn't reset successful
+    // This Modifier Check The Account of User if the account DidNot reset successful
     modifier isAccountReseted() {
         _;
         if (haveAccount[msg.sender] == true) {
             emit ErrorTryingToResetAccount(msg.sender);
             revert accountStatus(
                 true,
-                "[ There is an Error. Your Account Didn't Reset. Please Try Again ]"
+                "[ There is an Error. Your Account DidNot Reset. Please Try Again ]"
             );
         }
     }
