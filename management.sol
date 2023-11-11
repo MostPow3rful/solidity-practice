@@ -36,7 +36,7 @@ contract Management is Error {
         _;
     }
 
-    // This Modifier Check The User's Account if the account didn't creat successful
+    // This Modifier Check The User's Account if the account didn't create successful
     modifier isAccountCreated() {
         _;
         if (haveAccount[msg.sender] == false) {
