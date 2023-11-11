@@ -14,6 +14,7 @@ contract Management is Error {
     }
 
     // [ Modifiers ]
+    // This Modifier Check The User's Account ( User Must Not Have Account )
     modifier onlyGuest() {
         if (haveAccount[msg.sender] == true) {
             revert accountStatus(
@@ -24,6 +25,7 @@ contract Management is Error {
         _;
     }
 
+    // This Modifier Check The User's Account ( User Must Have Account )
     modifier onlyUser() {
         if (haveAccount[msg.sender] == false) {
             revert accountStatus(
@@ -90,22 +92,12 @@ contract Management is Error {
     }
 
     // This Function Return The FirstName Field of Account
-    function showFirstName()
-        public
-        view
-        onlyUser
-        returns (string memory firstName)
-    {
+    function showFirstName() public view onlyUser returns (string memory firstName) {
         return database[msg.sender].firstName;
     }
 
     // This Function Return The LastName Field Of Account
-    function showLastName()
-        public
-        view
-        onlyUser
-        returns (string memory lastName)
-    {
+    function showLastName()public view onlyUser returns (string memory lastName) {
         return database[msg.sender].lastName;
     }
 
