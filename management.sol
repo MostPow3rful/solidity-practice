@@ -14,7 +14,7 @@ contract Management is Error {
     }
 
     // [ Modifiers ]
-    modifier accountIsExists() {
+    modifier onlyGuest() {
         if (haveAccount[msg.sender] == true) {
             revert accountStatus(
                 true,
@@ -24,7 +24,7 @@ contract Management is Error {
         _;
     }
 
-    modifier accountIsNotExists() {
+    modifier onlyUser() {
         if (haveAccount[msg.sender] == false) {
             revert accountStatus(
                 false,
@@ -49,7 +49,7 @@ contract Management is Error {
         string memory _firstname,
         string memory _lastName,
         uint8 _age
-    ) public accountIsNotExists {
+    ) public onlyGuest {
         database[msg.sender] = Account(_firstname, _lastName, _age);
         haveAccount[msg.sender] = true;
         emit AccountCreated(_firstname, _lastName, _age);
@@ -60,7 +60,7 @@ contract Management is Error {
         string memory _firstName,
         string memory _lastName,
         uint8 _age
-    ) public accountIsExists {
+    ) public onlyUser {
         Account memory temp = Account("", "", 0);
 
         // If-Else Statements
@@ -83,7 +83,7 @@ contract Management is Error {
     }
 
     // This Function Reset Account Information
-    function resetPerson() public accountIsExists {
+    function resetPerson() public onlyUser {
         database[msg.sender] = Account("", "", 0);
         haveAccount[msg.sender] = false;
         emit AccountReseted(msg.sender);
@@ -93,7 +93,7 @@ contract Management is Error {
     function showFirstName()
         public
         view
-        accountIsExists
+        onlyUser
         returns (string memory firstName)
     {
         return database[msg.sender].firstName;
@@ -103,14 +103,14 @@ contract Management is Error {
     function showLastName()
         public
         view
-        accountIsExists
+        onlyUser
         returns (string memory lastName)
     {
         return database[msg.sender].lastName;
     }
 
     // This Function Return The Age Field Of Account
-    function showAge() public view accountIsExists returns (uint8 age) {
+    function showAge() public view onlyUser returns (uint8 age) {
         return database[msg.sender].age;
     }
 
