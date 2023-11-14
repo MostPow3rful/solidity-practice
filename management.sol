@@ -110,7 +110,7 @@ contract Management is Error {
 
     // This Function Reset Account Information
     function resetAccount() public onlyUser isAccountReseted {
-        database[msg.sender] = Account("", "", 0);
+        database[msg.sender] = Account({{firstName:"", lastName:"", age:0}});
         haveAccount[msg.sender] = false;
         emit AccountReseted(msg.sender);
     }
@@ -121,7 +121,7 @@ contract Management is Error {
     }
 
     // This Function Return The LastName Field Of Account
-    function showLastName()public view onlyUser returns (string memory lastName) {
+    function showLastName() public view onlyUser returns (string memory lastName) {
         return database[msg.sender].lastName;
     }
 
