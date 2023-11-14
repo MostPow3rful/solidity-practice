@@ -87,7 +87,7 @@ contract Management is Error {
         string memory _lastName,
         uint8 _age
     ) public onlyUser {
-        Account memory temp = Account("", "", 0);
+        Account memory temp = Account({firstName:"", lastName:"", age:0});
 
         // If-Else Statements
         keccak256(abi.encodePacked(_firstName)) !=
