@@ -110,7 +110,7 @@ contract Management is Error {
 
     // This Function Reset Account Information
     function resetAccount() public onlyUser isAccountReseted {
-        database[msg.sender] = Account({{firstName:"", lastName:"", age:0}});
+        database[msg.sender] = Account({firstName:"", lastName:"", age:0});
         haveAccount[msg.sender] = false;
         emit AccountReseted(msg.sender);
     }
