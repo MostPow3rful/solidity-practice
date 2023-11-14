@@ -76,7 +76,7 @@ contract Management is Error {
         string memory _lastName,
         uint8 _age
     ) public onlyGuest isAccountCreated {
-        database[msg.sender] = Account(_firstname, _lastName, _age);
+        database[msg.sender] = Account({firstName: _firstname, lastName:_lastName, age:_age});
         haveAccount[msg.sender] = true;
         emit AccountCreated(_firstname, _lastName, _age);
     }
