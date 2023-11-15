@@ -5,18 +5,25 @@ pragma solidity ^0.8.20;
 import "error.sol";
 
 contract Management is Error {
+    // [ Enums ]
+    enum Role {
+        USER,
+        GUEST
+    }
+
     // [ Structure ]
     // This Structure Have 3 Fields : [firstName string], [lastName string], [age uint8] Also every address have one account
     struct Account {
         string firstName;
         string lastName;
         uint8 age;
+        Role role;
     }
 
     // [ Modifiers ]
     // This Modifier Check The Account of User ( User Must Not Have Account )
     modifier onlyGuest() {
-        if (haveAccount[msg.sender] == true) {
+        if (database[msg.sender].role == Role.USER) {
             revert accountStatus(
                 true,
                 "[ You CanNot Do this Action beacuse You Have an Account. Please Reset Your Account ]"
@@ -27,7 +34,7 @@ contract Management is Error {
 
     // This Modifier Check The Account of User ( User Must Have Account )
     modifier onlyUser() {
-        if (haveAccount[msg.sender] == false) {
+        if (database[msg.sender].role == Role.GUEST) {
             revert accountStatus(
                 false,
                 "[ You CanNot Do this Action beacuse You DoNot Have an Account. Please Create Account ]"
@@ -39,7 +46,7 @@ contract Management is Error {
     // This Modifier Check The Account of User if the account DidNot create successful
     modifier isAccountCreated() {
         _;
-        if (haveAccount[msg.sender] == false) {
+        if (database[msg.sender].role == Role.GUEST) {
             emit ErrorTryingToCreateAccount(msg.sender);
             revert accountStatus(
                 false,
@@ -51,7 +58,7 @@ contract Management is Error {
     // This Modifier Check The Account of User if the account DidNot reset successful
     modifier isAccountReseted() {
         _;
-        if (haveAccount[msg.sender] == true) {
+        if (database[msg.sender].role == Role.USER) {
             emit ErrorTryingToResetAccount(msg.sender);
             revert accountStatus(
                 true,
@@ -67,7 +74,6 @@ contract Management is Error {
 
     // [ Maps ]
     mapping(address => Account) private database;
-    mapping(address => bool) private haveAccount;
 
     // [ Functions ]
     // This Function Create New Account
@@ -76,8 +82,12 @@ contract Management is Error {
         string memory _lastName,
         uint8 _age
     ) public onlyGuest isAccountCreated {
-        database[msg.sender] = Account({firstName: _firstname, lastName:_lastName, age:_age});
-        haveAccount[msg.sender] = true;
+        database[msg.sender] = Account({
+            firstName: _firstname,
+            lastName: _lastName,
+            age: _age,
+            role: Role.USER
+        });
         emit AccountCreated(_firstname, _lastName, _age);
     }
 
@@ -87,7 +97,12 @@ contract Management is Error {
         string memory _lastName,
         uint8 _age
     ) public onlyUser {
-        Account memory temp = Account({firstName:"", lastName:"", age:0});
+        Account memory temp = Account({
+            firstName: "",
+            lastName: "",
+            age: 0,
+            role: Role.GUEST
+        });
 
         // If-Else Statements
         keccak256(abi.encodePacked(_firstName)) !=
@@ -110,8 +125,12 @@ contract Management is Error {
 
     // This Function Reset Account Information
     function resetAccount() public onlyUser isAccountReseted {
-        database[msg.sender] = Account({firstName:"", lastName:"", age:0});
-        haveAccount[msg.sender] = false;
+        database[msg.sender] = Account({
+            firstName: "",
+            lastName: "",
+            age: 0,
+            role: Role.GUEST
+        });
         emit AccountReseted(msg.sender);
     }
 
