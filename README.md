@@ -3,6 +3,10 @@
 - Every address can update the information of self account
 - Every address can delete self account
 - Every address can access the information of self account
+- Every address can Send Money
+- Every address can Receive Money
+- Every address can See The Balance of Contract
+- Every address can See The Balance of Self Wallet
 - Show The address of User
 - Show The Amount of User's Wallet
 - Prevent logic Bugs

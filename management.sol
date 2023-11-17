@@ -3,8 +3,9 @@ pragma solidity ^0.8.20;
 
 // [ Imported Contracts ]
 import "error.sol";
+import "money.sol";
 
-contract Management is Error {
+contract Management is Error,SendETH,ReceiveETH {
     // [ Enums ]
     enum Role {
         USER,
@@ -105,13 +106,11 @@ contract Management is Error {
         });
 
         // If-Else Statements
-        keccak256(abi.encodePacked(_firstName)) !=
-            keccak256(abi.encodePacked(""))
+        keccak256(abi.encodePacked(_firstName)) != keccak256(abi.encodePacked(""))
             ? temp.firstName = _firstName
             : temp.firstName = database[msg.sender].firstName;
 
-        keccak256(abi.encodePacked(_lastName)) !=
-            keccak256(abi.encodePacked(""))
+        keccak256(abi.encodePacked(_lastName)) != keccak256(abi.encodePacked(""))
             ? temp.lastName = _lastName
             : temp.lastName = database[msg.sender].lastName;
 
